@@ -54,208 +54,208 @@ import java.util.List;
 public class DFSTest {
 
 
-  //--------------------------------------------------------------------
-  // My Tests
-  //--------------------------------------------------------------------
+    //--------------------------------------------------------------------
+    // My Tests
+    //--------------------------------------------------------------------
 
 
 
 
 
-  //--------------------------------------------------------------------
-  // Directed Graph Tests
-  //--------------------------------------------------------------------
-  
-  @Test
-  public void basicDirectedAllReachableDFS() throws Exception {
-    Graph<Integer> g = new AdjacencyList<>(4, true);
-    g.add(0, null, 1);
-    g.add(0, null, 2);
-    g.add(2, null, 3);
-    g.add(1, null, 0);
-    // dfs from 0
-    Map<Integer,Integer> tree = GraphAlgorithms.dfs(g, 0);
-    assertEquals(4, tree.size());
-    assertTrue(-1 == tree.get(0));
-    assertTrue(0 == tree.get(1));
-    assertTrue(0 == tree.get(2));
-    assertTrue(2 == tree.get(3));
-    // dfs from 1
-    tree = GraphAlgorithms.dfs(g, 1);
-    assertEquals(4, tree.size());
-    assertTrue(-1 == tree.get(1));
-    assertTrue(1 == tree.get(0));
-    assertTrue(0 == tree.get(2));
-    assertTrue(2 == tree.get(3));
-  }
-  
-  @Test
-  public void basicDirectedSomeReachableDFS() {
-    Graph<Integer> g = new AdjacencyList<>(5, true);
-    g.add(0, null, 1);
-    g.add(0, null, 3);
-    g.add(1, null, 2);
-    g.add(1, null, 4);
-    g.add(3, null, 1);
-    g.add(3, null, 4);
-    g.add(4, null, 2);
-    // dfs from 3
-    Map<Integer,Integer> tree = GraphAlgorithms.dfs(g, 3);
-    assertEquals(4, tree.size());
-    assertTrue(-1 == tree.get(3));
-    assertTrue(3 == tree.get(1));
-    assertTrue(3 == tree.get(4));
-    assertTrue(1 == tree.get(2) || 4 == tree.get(2));
-  }
-  
-  @Test
-  public void basicDirectedNoneReachableDFS() {
-    Graph<Integer> g = new AdjacencyList<>(5, true);
-    g.add(0, null, 1);
-    g.add(0, null, 3);
-    g.add(1, null, 2);
-    g.add(1, null, 4);
-    g.add(3, null, 1);
-    g.add(3, null, 4);
-    g.add(4, null, 2);
-    // dfs from 0
-    Map<Integer,Integer> tree = GraphAlgorithms.dfs(g, 2);
-    assertEquals(1, tree.size());
-    assertTrue(-1 == tree.get(2));
-  }
-  
-  @Test
-  public void basicUndirectedAllReachableDFS() {
-    Graph<Integer> g1 = new AdjacencyList<>(5, false);
-    g1.add(0, null, 1);
-    g1.add(0, null, 2);
-    g1.add(1, null, 4);
-    g1.add(1, null, 3);
-    g1.add(3, null, 4);
-    // dfs from 0
-    Map<Integer,Integer> tree = GraphAlgorithms.dfs(g1, 0);
-    assertEquals(5, tree.size());
-    assertTrue(-1 == tree.get(0));
-    assertTrue(0 == tree.get(2));
-    assertTrue(0 == tree.get(1));
-    assertTrue(1 == tree.get(3) || 4 == tree.get(3));
-    if (1 == tree.get(3))
-      assertTrue(3 == tree.get(4));
-    else
-      assertTrue(1 == tree.get(4));
-    // same graph, order of edges in add inversed
-    Graph<Integer> g2 = new AdjacencyList<>(5, false);
-    g2.add(1, null, 0);
-    g2.add(2, null, 0);
-    g2.add(4, null, 1);
-    g2.add(3, null, 1);
-    g2.add(4, null, 3);
-    // dfs from 0
-    tree = GraphAlgorithms.dfs(g2, 0);
-    assertEquals(5, tree.size());
-    assertTrue(-1 == tree.get(0));
-    assertTrue(0 == tree.get(2));
-    assertTrue(0 == tree.get(1));
-    assertTrue(1 == tree.get(3) || 4 == tree.get(3));
-    if (1 == tree.get(3))
-      assertTrue(3 == tree.get(4));
-    else
-      assertTrue(1 == tree.get(4));
-  }
+    //--------------------------------------------------------------------
+    // Directed Graph Tests
+    //--------------------------------------------------------------------
 
-  @Test
-  public void basicUndirectedSomeReachableDFS() {
-    Graph<Integer> g = new AdjacencyList<>(4, false);
-    g.add(0, null, 1);
-    g.add(2, null, 3);
-    // dfs from 0
-    Map<Integer,Integer> tree = GraphAlgorithms.dfs(g, 0);
-    assertEquals(2, tree.size());
-    assertTrue(-1 == tree.get(0));
-    assertTrue(0 == tree.get(1));
-    // dfs from 3
-    tree = GraphAlgorithms.dfs(g, 3);
-    assertEquals(2, tree.size());
-    assertTrue(-1 == tree.get(3));
-    assertTrue(3 == tree.get(2));
-  }
+    @Test
+    public void basicDirectedAllReachableDFS() throws Exception {
+        Graph<Integer> g = new AdjacencyList<>(4, true);
+        g.add(0, null, 1);
+        g.add(0, null, 2);
+        g.add(2, null, 3);
+        g.add(1, null, 0);
+        // dfs from 0
+        Map<Integer,Integer> tree = GraphAlgorithms.dfs(g, 0);
+        assertEquals(4, tree.size());
+        assertTrue(-1 == tree.get(0));
+        assertTrue(0 == tree.get(1));
+        assertTrue(0 == tree.get(2));
+        assertTrue(2 == tree.get(3));
+        // dfs from 1
+        tree = GraphAlgorithms.dfs(g, 1);
+        assertEquals(4, tree.size());
+        assertTrue(-1 == tree.get(1));
+        assertTrue(1 == tree.get(0));
+        assertTrue(0 == tree.get(2));
+        assertTrue(2 == tree.get(3));
+    }
 
-  @Test
-  public void basicUndirectedDFS() {
-    Graph<Integer> g = new AdjacencyList<>(4, false);
-    g.add(0, null, 1);
-    g.add(0, null, 3);
-    g.add(1, null, 2);
-    assertTrue(GraphAlgorithms.acyclic(g));
-    g.add(3, -1, 2);
-    assertFalse(GraphAlgorithms.acyclic(g));
-  }
+    @Test
+    public void basicDirectedSomeReachableDFS() {
+        Graph<Integer> g = new AdjacencyList<>(5, true);
+        g.add(0, null, 1);
+        g.add(0, null, 3);
+        g.add(1, null, 2);
+        g.add(1, null, 4);
+        g.add(3, null, 1);
+        g.add(3, null, 4);
+        g.add(4, null, 2);
+        // dfs from 3
+        Map<Integer,Integer> tree = GraphAlgorithms.dfs(g, 3);
+        assertEquals(4, tree.size());
+        assertTrue(-1 == tree.get(3));
+        assertTrue(3 == tree.get(1));
+        assertTrue(3 == tree.get(4));
+        assertTrue(1 == tree.get(2) || 4 == tree.get(2));
+    }
 
-  @Test
-  public void basicDirectedCycleCheck() {
-    Graph<Integer> g = new AdjacencyList<>(4, true);
-    g.add(0, null, 1);
-    g.add(1, null, 2);
-    g.add(0, null, 3);
-    assertTrue(GraphAlgorithms.acyclic(g));
-    g.add(2, 0, 0);
-    assertFalse(GraphAlgorithms.acyclic(g));
-  }
+    @Test
+    public void basicDirectedNoneReachableDFS() {
+        Graph<Integer> g = new AdjacencyList<>(5, true);
+        g.add(0, null, 1);
+        g.add(0, null, 3);
+        g.add(1, null, 2);
+        g.add(1, null, 4);
+        g.add(3, null, 1);
+        g.add(3, null, 4);
+        g.add(4, null, 2);
+        // dfs from 0
+        Map<Integer,Integer> tree = GraphAlgorithms.dfs(g, 2);
+        assertEquals(1, tree.size());
+        assertTrue(-1 == tree.get(2));
+    }
 
-  @Test
-  public void undirectedDisconnectedCycleCheck() {
-    Graph<Integer> g = new AdjacencyList<>(6, false);
-    g.add(0, null, 1);
-    g.add(0, null, 2);
-    g.add(1, null, 2);
-    assertFalse(GraphAlgorithms.acyclic(g));
-    g.add(3, null, 4);
-    g.add(4, null, 5);
-    g.add(5, null, 3);
-    assertFalse(GraphAlgorithms.acyclic(g));
-  }
+    @Test
+    public void basicUndirectedAllReachableDFS() {
+        Graph<Integer> g1 = new AdjacencyList<>(5, false);
+        g1.add(0, null, 1);
+        g1.add(0, null, 2);
+        g1.add(1, null, 4);
+        g1.add(1, null, 3);
+        g1.add(3, null, 4);
+        // dfs from 0
+        Map<Integer,Integer> tree = GraphAlgorithms.dfs(g1, 0);
+        assertEquals(5, tree.size());
+        assertTrue(-1 == tree.get(0));
+        assertTrue(0 == tree.get(2));
+        assertTrue(0 == tree.get(1));
+        assertTrue(1 == tree.get(3) || 4 == tree.get(3));
+        if (1 == tree.get(3))
+            assertTrue(3 == tree.get(4));
+        else
+            assertTrue(1 == tree.get(4));
+        // same graph, order of edges in add inversed
+        Graph<Integer> g2 = new AdjacencyList<>(5, false);
+        g2.add(1, null, 0);
+        g2.add(2, null, 0);
+        g2.add(4, null, 1);
+        g2.add(3, null, 1);
+        g2.add(4, null, 3);
+        // dfs from 0
+        tree = GraphAlgorithms.dfs(g2, 0);
+        assertEquals(5, tree.size());
+        assertTrue(-1 == tree.get(0));
+        assertTrue(0 == tree.get(2));
+        assertTrue(0 == tree.get(1));
+        assertTrue(1 == tree.get(3) || 4 == tree.get(3));
+        if (1 == tree.get(3))
+            assertTrue(3 == tree.get(4));
+        else
+            assertTrue(1 == tree.get(4));
+    }
 
-  @Test
-  public void directedDisconnectedCycleCheck() {
-    Graph<Integer> g = new AdjacencyList<>(6, true);
-    g.add(0, null, 1);
-    g.add(0, null, 2);
-    g.add(1, null, 2);
-    assertTrue(GraphAlgorithms.acyclic(g));
-    g.add(3, null, 4);
-    g.add(4, null, 5);
-    g.add(5, null, 3);
-    assertFalse(GraphAlgorithms.acyclic(g));
-  }
+    @Test
+    public void basicUndirectedSomeReachableDFS() {
+        Graph<Integer> g = new AdjacencyList<>(4, false);
+        g.add(0, null, 1);
+        g.add(2, null, 3);
+        // dfs from 0
+        Map<Integer,Integer> tree = GraphAlgorithms.dfs(g, 0);
+        assertEquals(2, tree.size());
+        assertTrue(-1 == tree.get(0));
+        assertTrue(0 == tree.get(1));
+        // dfs from 3
+        tree = GraphAlgorithms.dfs(g, 3);
+        assertEquals(2, tree.size());
+        assertTrue(-1 == tree.get(3));
+        assertTrue(3 == tree.get(2));
+    }
 
-    
-  @Test
-  public void basicDFSTopologicalSort() {
-    Graph<Integer> g1 = new AdjacencyList<>(5, true);
-    g1.add(0, null, 2);
-    g1.add(1, null, 2);
-    g1.add(2, null, 3);
-    g1.add(2, null, 4);
-    g1.add(3, null, 4);
-    Map<Integer,Integer> ordering = GraphAlgorithms.topologicalSort(g1);
-    assertEquals(5, ordering.size());
-    assertTrue(ordering.get(3) < ordering.get(4));
-    assertTrue(ordering.get(2) < ordering.get(3));
-    assertTrue(ordering.get(1) < ordering.get(2));
-    assertTrue(ordering.get(0) < ordering.get(2));
-    Graph<Integer> g2 = new AdjacencyList<>(5, true);
-    g2.add(0, null, 2);
-    g2.add(1, null, 2);
-    g2.add(2, null, 3);
-    g2.add(2, null, 4);
-    g2.add(4, null, 3);
-    ordering = GraphAlgorithms.topologicalSort(g2);
-    assertTrue(ordering.get(4) < ordering.get(3));
-    assertTrue(ordering.get(2) < ordering.get(3));
-    assertTrue(ordering.get(1) < ordering.get(2));
-    assertTrue(ordering.get(0) < ordering.get(2));
-  }
+    @Test
+    public void basicUndirectedDFS() {
+        Graph<Integer> g = new AdjacencyList<>(4, false);
+        g.add(0, null, 1);
+        g.add(0, null, 3);
+        g.add(1, null, 2);
+        assertTrue(GraphAlgorithms.acyclic(g));
+        g.add(3, -1, 2);
+        assertFalse(GraphAlgorithms.acyclic(g));
+    }
+
+    @Test
+    public void basicDirectedCycleCheck() {
+        Graph<Integer> g = new AdjacencyList<>(4, true);
+        g.add(0, null, 1);
+        g.add(1, null, 2);
+        g.add(0, null, 3);
+        assertTrue(GraphAlgorithms.acyclic(g));
+        g.add(2, 0, 0);
+        assertFalse(GraphAlgorithms.acyclic(g));
+    }
+
+    @Test
+    public void undirectedDisconnectedCycleCheck() {
+        Graph<Integer> g = new AdjacencyList<>(6, false);
+        g.add(0, null, 1);
+        g.add(0, null, 2);
+        g.add(1, null, 2);
+        assertFalse(GraphAlgorithms.acyclic(g));
+        g.add(3, null, 4);
+        g.add(4, null, 5);
+        g.add(5, null, 3);
+        assertFalse(GraphAlgorithms.acyclic(g));
+    }
+
+    @Test
+    public void directedDisconnectedCycleCheck() {
+        Graph<Integer> g = new AdjacencyList<>(6, true);
+        g.add(0, null, 1);
+        g.add(0, null, 2);
+        g.add(1, null, 2);
+        assertTrue(GraphAlgorithms.acyclic(g));
+        g.add(3, null, 4);
+        g.add(4, null, 5);
+        g.add(5, null, 3);
+        assertFalse(GraphAlgorithms.acyclic(g));
+    }
 
 
-  
+    @Test
+    public void basicDFSTopologicalSort() {
+        Graph<Integer> g1 = new AdjacencyList<>(5, true);
+        g1.add(0, null, 2);
+        g1.add(1, null, 2);
+        g1.add(2, null, 3);
+        g1.add(2, null, 4);
+        g1.add(3, null, 4);
+        Map<Integer,Integer> ordering = GraphAlgorithms.topologicalSort(g1);
+        assertEquals(5, ordering.size());
+        assertTrue(ordering.get(3) < ordering.get(4));
+        assertTrue(ordering.get(2) < ordering.get(3));
+        assertTrue(ordering.get(1) < ordering.get(2));
+        assertTrue(ordering.get(0) < ordering.get(2));
+        Graph<Integer> g2 = new AdjacencyList<>(5, true);
+        g2.add(0, null, 2);
+        g2.add(1, null, 2);
+        g2.add(2, null, 3);
+        g2.add(2, null, 4);
+        g2.add(4, null, 3);
+        ordering = GraphAlgorithms.topologicalSort(g2);
+        assertTrue(ordering.get(4) < ordering.get(3));
+        assertTrue(ordering.get(2) < ordering.get(3));
+        assertTrue(ordering.get(1) < ordering.get(2));
+        assertTrue(ordering.get(0) < ordering.get(2));
+    }
+
+
+
 }

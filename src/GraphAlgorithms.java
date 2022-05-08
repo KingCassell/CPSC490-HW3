@@ -284,12 +284,10 @@ public class GraphAlgorithms {
         for (int vertex: toVisit) {
             // check if vertex has had all its children visited.
             if (black.contains(vertex)) {
-                System.out.println("Found a Black: " + uVal);
                 continue;
             }
             // check if the vertex is a child of the same node cluster under the same parent.
             if (grey.contains(vertex)) {
-                System.out.println("Found a grey: " + uVal + " -> " + vertex);
                 return true;
             }
             // recursively check the next vertex and its children.
@@ -312,7 +310,49 @@ public class GraphAlgorithms {
      */
     public static Map<Integer,Integer> topologicalSort(Graph g) {
         // TODO
-        return null;
+        Deque<Integer> stack = new ArrayDeque<>(g.nodeCount());
+        Map<Integer, Integer> sortedNodes = new HashMap<>(g.nodeCount());
+        Set<Integer> discoveredNodes = new HashSet<>(g.nodeCount());
+        int parent, child;
+        // loop through every node and check if it can be sorted recursively using the helper.
+        for (int vertex = 0; vertex < g.nodeCount(); ++vertex) {
+            if (discoveredNodes.contains(vertex)) {
+                continue;
+            }
+            topologicalSortHelper(g, vertex, stack, discoveredNodes);
+        }
+        parent = stack.poll();
+        sortedNodes.put(-1, parent);
+        System.out.println(-1 + " -> " + parent);
+        while (!stack.isEmpty()) {
+            child = stack.poll();
+            sortedNodes.put(child, parent);
+            System.out.println(parent + " -> " + child);
+            parent = child;
+        }
+
+        return sortedNodes;
+    }
+
+
+    private static void topologicalSortHelper(Graph g, int vertex, Deque<Integer> stack,
+                                              Set<Integer> discoveredNodes) {
+        List<Integer> toVisit = new ArrayList<>(g.nodeCount());
+
+        if (g.directed()) {
+            toVisit.addAll(g.outNodes(vertex));
+        } else {
+            toVisit.addAll(g.adjacent(vertex));
+        }
+
+        discoveredNodes.add(vertex);
+        for (int child: toVisit) {
+            if (discoveredNodes.contains(child)) {
+                continue;
+            }
+            topologicalSortHelper(g, child, stack, discoveredNodes);
+        }
+        stack.offerFirst(vertex);
     }
 
 
