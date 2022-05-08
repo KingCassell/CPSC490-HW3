@@ -313,7 +313,7 @@ public class GraphAlgorithms {
         Deque<Integer> stack = new ArrayDeque<>(g.nodeCount());
         Map<Integer, Integer> sortedNodes = new HashMap<>(g.nodeCount());
         Set<Integer> discoveredNodes = new HashSet<>(g.nodeCount());
-        int parent, child;
+        int parent;
         // loop through every node and check if it can be sorted recursively using the helper.
         for (int vertex = 0; vertex < g.nodeCount(); ++vertex) {
             if (discoveredNodes.contains(vertex)) {
@@ -321,16 +321,11 @@ public class GraphAlgorithms {
             }
             topologicalSortHelper(g, vertex, stack, discoveredNodes);
         }
-        parent = stack.poll();
-        sortedNodes.put(-1, parent);
-        System.out.println(-1 + " -> " + parent);
-        while (!stack.isEmpty()) {
-            child = stack.poll();
-            sortedNodes.put(child, parent);
-            System.out.println(parent + " -> " + child);
-            parent = child;
+        // match up the node index with the spots that they would be ordered into.
+        for (int i = 0; i < g.nodeCount(); ++i) {
+            parent = stack.poll();
+            sortedNodes.put(i, parent);
         }
-
         return sortedNodes;
     }
 
@@ -338,20 +333,21 @@ public class GraphAlgorithms {
     private static void topologicalSortHelper(Graph g, int vertex, Deque<Integer> stack,
                                               Set<Integer> discoveredNodes) {
         List<Integer> toVisit = new ArrayList<>(g.nodeCount());
-
+        // load a list of the adjacent nodes based on if the graph is directed
         if (g.directed()) {
             toVisit.addAll(g.outNodes(vertex));
         } else {
             toVisit.addAll(g.adjacent(vertex));
         }
-
         discoveredNodes.add(vertex);
+        // recursively go through all the child nodes and check if they have already been visited.
         for (int child: toVisit) {
             if (discoveredNodes.contains(child)) {
                 continue;
             }
             topologicalSortHelper(g, child, stack, discoveredNodes);
         }
+        // load the node into the stack after all its children have been visited.
         stack.offerFirst(vertex);
     }
 

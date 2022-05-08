@@ -239,6 +239,11 @@ public class DFSTest {
         g1.add(3, null, 4);
         Map<Integer,Integer> ordering = GraphAlgorithms.topologicalSort(g1);
         assertEquals(5, ordering.size());
+        System.out.println(ordering.get(0));
+        System.out.println(ordering.get(1));
+        System.out.println(ordering.get(2));
+        System.out.println(ordering.get(3));
+        System.out.println(ordering.get(4));
         assertTrue(ordering.get(3) < ordering.get(4));
         assertTrue(ordering.get(2) < ordering.get(3));
         assertTrue(ordering.get(1) < ordering.get(2));
