@@ -1,3 +1,10 @@
+/*
+ * File: DFSTest.java
+ * Date: Spring 2022
+ * Auth: Dustin Cassell
+ * Desc: The class that contains all the graph related algorithms.
+ */
+
 
 import java.util.*;
 
@@ -13,6 +20,7 @@ public class GraphAlgorithms {
     // SEE: tests/DFSTest.java for additional instructions.
 
     private static Queue<Integer> queue;
+    private static Stack<Integer> stack;
     private static Map<Integer, Integer> discoveredNodes;
 
     // Singleton
@@ -68,12 +76,11 @@ public class GraphAlgorithms {
      */
     public static List<Integer> shortestPath(Graph g, int src, int dst) {
         List<Integer> shortestPath = new ArrayList<>(g.nodeCount());
-        Stack<Integer> stack = new Stack<>();
+        stack = new Stack<>();
         // add the list of discovered nodes after performing a Breadth first search.
         discoveredNodes = bfs(g, src);
         int parent = 0;
         int child = dst;
-        int index = 0;
         // traverse from the destination backwards to the src until the src is either found or no more nodes exist.
         // child is pointed to by parent for discoveredNodes.
         stack.push(child);
@@ -196,8 +203,34 @@ public class GraphAlgorithms {
      * @return A search tree (node to parent node mapping)
      */
     public static Map<Integer,Integer> dfs(Graph g, int src) {
-        // TODO
-        return null;
+        List<Integer> toVisit = new ArrayList<>(g.nodeCount());
+        stack = new Stack<>();
+        discoveredNodes = new HashMap<>();
+        int uVal;
+        discoveredNodes.put(src, -1);
+        stack.add(src);
+        // the new nodes to check are stored in a stack so that once a node runs out of available out edges
+        // the next node to be checked is the last node that was pushed onto the stack.
+        while (!stack.isEmpty()) {
+            // get the next node to check and clear the list of adjacent nodes
+            uVal = stack.pop();
+            toVisit.clear();
+            // Get all the nodes adjacent to the uVal
+            if (g.directed()) {
+                toVisit.addAll(g.outNodes(uVal));
+            } else {
+                toVisit.addAll(g.adjacent(uVal));
+            }
+            for (int vertex: toVisit) {
+                // check the list of nodes that can be visited to see if they have already been discovered.
+                // if not discovered and the edge exists, add it to the stack of possible nodes to be checked.
+                if (!discoveredNodes.containsKey(vertex)) {
+                    stack.push(vertex);
+                    discoveredNodes.put(vertex, uVal);
+                }
+            }
+        }
+        return discoveredNodes;
     }
 
     /**
@@ -207,8 +240,50 @@ public class GraphAlgorithms {
      */
     public static boolean acyclic(Graph g) {
         // TODO
-        return false;
+        List<Integer> toVisit = new ArrayList<>(g.nodeCount());
+        discoveredNodes = new HashMap<>(g.nodeCount());
+        stack = new Stack<>();
+        int uVal;
+        int parent = -1;
+
+        discoveredNodes.put(0, -1);
+        stack.push(0);
+
+        while (!stack.isEmpty()) {
+            // get the next node to check and clear the list of adjacent nodes
+            uVal = stack.pop();
+            System.out.println("uVal:    " + uVal);
+            System.out.println("parent:  " + parent);
+            toVisit.clear();
+
+            // Get all the nodes adjacent to the uVal
+            if (g.directed()) {
+                toVisit.addAll(g.outNodes(uVal));
+            } else {
+                toVisit.addAll(g.adjacent(uVal));
+            }
+
+            for (int vertex: toVisit) {
+                // check the list of nodes that can be visited to see if they have already been discovered.
+                // if not discovered, add it to the stack of possible nodes to be checked.
+                if (!discoveredNodes.containsKey(vertex)) {
+                    System.out.println("PUSHING: " + vertex);
+                    stack.push(vertex);
+                    parent = uVal;
+                    discoveredNodes.put(vertex, uVal);
+                } else if (vertex == parent) {
+                    System.out.println("RETURNING: true");
+                    return false;
+                }
+            }
+            // the parent will be checked every loop to mark which paths cannot be traversed
+            System.out.println();
+        }
+        // if no path exists return null.
+        System.out.println("RETURNING: false\n\n\n\n");
+        return true;
     }
+
 
     /**
      * Computes a topological sort over a directed graph.

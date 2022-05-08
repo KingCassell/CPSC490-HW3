@@ -1,8 +1,8 @@
 /*
  * File: DFSTest.java
  * Date: Spring 2022
- * Auth: 
- * Desc: 
+ * Auth: Dustin Cassell
+ * Desc: General Tests for the Depth First Search related Methods
  */
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.List;
 
 
-/* TODO: You must do the following steps: 
+/* TODO: You must do the following steps:
 
    (1). For DFS, you must add one new test for directed and one new
    test for undirected graphs. Your tests must contain a significantly
@@ -52,6 +52,15 @@ import java.util.List;
 
 
 public class DFSTest {
+
+
+  //--------------------------------------------------------------------
+  // My Tests
+  //--------------------------------------------------------------------
+
+
+
+
 
   //--------------------------------------------------------------------
   // Directed Graph Tests
