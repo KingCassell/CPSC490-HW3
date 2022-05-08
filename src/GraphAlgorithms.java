@@ -239,6 +239,7 @@ public class GraphAlgorithms {
      * @return true if the graph is acyclic, false if it contains cycles
      */
     public static boolean acyclic(Graph g) {
+        // TODO: still not passing all tests, but the results appear correct.
         Set<Integer> white = new HashSet<>(g.nodeCount());
         Set<Integer> grey = new HashSet<>(g.nodeCount());
         Set<Integer> black = new HashSet<>(g.nodeCount());
@@ -309,7 +310,6 @@ public class GraphAlgorithms {
      * mapping)
      */
     public static Map<Integer,Integer> topologicalSort(Graph g) {
-        // TODO
         Deque<Integer> stack = new ArrayDeque<>(g.nodeCount());
         Map<Integer, Integer> sortedNodes = new HashMap<>(g.nodeCount());
         Set<Integer> discoveredNodes = new HashSet<>(g.nodeCount());
@@ -330,6 +330,14 @@ public class GraphAlgorithms {
     }
 
 
+    /**
+     * Recursive helper method for filling a stack with the sorted order of nodes in a graph
+     * without losing their order of dependency.
+     * @param g the graph to be sorted
+     * @param vertex the current node that will have its children checked.
+     * @param stack the stack of ordered nodes.
+     * @param discoveredNodes the nodes that have been visited already.
+     */
     private static void topologicalSortHelper(Graph g, int vertex, Deque<Integer> stack,
                                               Set<Integer> discoveredNodes) {
         List<Integer> toVisit = new ArrayList<>(g.nodeCount());
@@ -350,6 +358,4 @@ public class GraphAlgorithms {
         // load the node into the stack after all its children have been visited.
         stack.offerFirst(vertex);
     }
-
-
 }

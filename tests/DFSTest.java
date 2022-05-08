@@ -59,7 +59,36 @@ public class DFSTest {
     //--------------------------------------------------------------------
 
 
-
+    @Test
+    public void complexDirectedAllReachableBFS() throws Exception {
+        Graph<Integer> g_a_d = new AdjacencyList<>(10, true);
+        g_a_d.add(0, null, 1);
+        g_a_d.add(1, null, 0);
+        g_a_d.add(1, null, 2);
+        g_a_d.add(1, null, 3);
+        g_a_d.add(1, null, 5);
+        g_a_d.add(5, null, 4);
+        g_a_d.add(5, null, 8);
+        g_a_d.add(5, null, 9);
+        g_a_d.add(7, null, 2);
+        g_a_d.add(7, null, 6);
+        g_a_d.add(9, null, 3);
+        g_a_d.add(9, null, 4);
+        g_a_d.add(9, null, 7);
+        // bfs from 0
+        Map<Integer,Integer> tree = GraphAlgorithms.dfs(g_a_d, 0);
+        assertEquals(10, tree.size());
+        assertTrue(-1 == tree.get(0));
+        assertTrue(0 == tree.get(1));
+        assertTrue(1 == tree.get(2));
+        assertTrue(1 == tree.get(3));
+        assertTrue(5 == tree.get(4));
+        assertTrue(1 == tree.get(5));
+        assertTrue(7 == tree.get(6));
+        assertTrue(9 == tree.get(7));
+        assertTrue(5 == tree.get(8));
+        assertTrue(5 == tree.get(9));
+    }
 
 
     //--------------------------------------------------------------------
