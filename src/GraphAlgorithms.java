@@ -246,42 +246,83 @@ public class GraphAlgorithms {
         int uVal;
         int parent = -1;
 
-        discoveredNodes.put(0, -1);
-        stack.push(0);
-
-        while (!stack.isEmpty()) {
-            // get the next node to check and clear the list of adjacent nodes
-            uVal = stack.pop();
-            System.out.println("uVal:    " + uVal);
-            System.out.println("parent:  " + parent);
-            toVisit.clear();
-
-            // Get all the nodes adjacent to the uVal
-            if (g.directed()) {
-                toVisit.addAll(g.outNodes(uVal));
-            } else {
-                toVisit.addAll(g.adjacent(uVal));
+//        if (g.directed()) {
+            Set<Integer> white = new HashSet<>(g.nodeCount());
+            Set<Integer> grey = new HashSet<>(g.nodeCount());
+            Set<Integer> black = new HashSet<>(g.nodeCount());
+            for (int node = 0; node < g.nodeCount(); ++node) {
+                white.add(node);
             }
-
-            for (int vertex: toVisit) {
-                // check the list of nodes that can be visited to see if they have already been discovered.
-                // if not discovered, add it to the stack of possible nodes to be checked.
-                if (!discoveredNodes.containsKey(vertex)) {
-                    System.out.println("PUSHING: " + vertex);
-                    stack.push(vertex);
-                    parent = uVal;
-                    discoveredNodes.put(vertex, uVal);
-                } else if (vertex == parent) {
-                    System.out.println("RETURNING: true");
+            while (white.size() > 0) {
+                uVal = white.iterator().next();
+                if (hasCycle(g, uVal, white, grey, black)) {
                     return false;
                 }
             }
-            // the parent will be checked every loop to mark which paths cannot be traversed
-            System.out.println();
-        }
-        // if no path exists return null.
-        System.out.println("RETURNING: false\n\n\n\n");
+//        } else {
+//            discoveredNodes.put(0, -1);
+//            stack.push(0);
+//            while (!stack.isEmpty()) {
+//                // get the next node to check and clear the list of adjacent nodes
+//                uVal = stack.pop();
+//                System.out.println("uVal:    " + uVal);
+//                System.out.println("parent:  " + parent);
+//                toVisit.clear();
+//                // Get all the nodes adjacent to the uVal
+//                toVisit.addAll(g.adjacent(uVal));
+//                for (int vertex: toVisit) {
+//                    // check the list of nodes that can be visited to see if they have already been discovered.
+//                    // if not discovered, add it to the stack of possible nodes to be checked.
+//                    if (vertex != parent && !discoveredNodes.containsKey(vertex)) {
+//                        System.out.println("PUSHING: " + vertex);
+//                        stack.push(vertex);
+//                        parent = uVal;
+//                        discoveredNodes.put(vertex, uVal);
+//                    } else {
+//                        System.out.println("RETURNING: false");
+//                        return false;
+//                    }
+//                }
+//                // the parent will be checked every loop to mark which paths cannot be traversed
+//                System.out.println();
+//            }
+//            // if no path exists return null.
+//            System.out.println("RETURNING: false\n\n\n\n");
+//        }
         return true;
+    }
+
+
+    private static boolean hasCycle(Graph g, int uVal, Set<Integer> white, Set<Integer> grey, Set<Integer> black) {
+        List<Integer> toVisit = new ArrayList<>(g.nodeCount());
+        // move node from white to grey
+        white.remove(uVal);
+        grey.add(uVal);
+        // get all nodes adjacent to the uVal
+        if (g.directed()) {
+            toVisit.addAll(g.outNodes(uVal));
+        } else {
+            toVisit.addAll(g.adjacent(uVal));
+        }
+
+        for (int vertex: toVisit) {
+            // if the current vertex is in the black list skip it.
+            if (black.contains(vertex)) {
+                System.out.println("Found a Black: " + uVal);
+                continue;
+            }
+            if (grey.contains(vertex)) {
+                System.out.println("Found a grey: " + uVal + " -> " + vertex);
+                return true;
+            }
+            if (hasCycle(g, vertex, white, grey, black)) {
+                return true;
+            }
+        }
+        // move node from grey to black
+        grey.remove(uVal);
+        black.add(uVal);
+        return false;
     }
 
 

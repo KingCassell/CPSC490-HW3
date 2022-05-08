@@ -204,7 +204,7 @@ public class DFSTest {
 
   @Test
   public void undirectedDisconnectedCycleCheck() {
-    Graph<Integer> g = new AdjacencyList<>(4, false);
+    Graph<Integer> g = new AdjacencyList<>(6, false);
     g.add(0, null, 1);
     g.add(0, null, 2);
     g.add(1, null, 2);

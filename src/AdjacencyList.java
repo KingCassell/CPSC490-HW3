@@ -68,7 +68,7 @@ public class AdjacencyList<T> implements Graph<T> {
      */
     public void add(int node1, T label, int node2) {
         if (directed) {
-            if (adjList[node1].get(node2) == null) {
+            if (!adjList[node1].containsKey(node2)) {
                 // if graph is directed and node1 is empty,
                 // add node2 as connected to node1.
                 adjList[node1].put(node2, label);
@@ -77,7 +77,7 @@ public class AdjacencyList<T> implements Graph<T> {
                 System.out.println("Invalid Add: " + node1 + " already contains edge");
             }
         } else {
-            if (adjList[node1].get(node2) == null) {
+            if (!adjList[node1].containsKey(node2)) {
                 // if graph is undirected and has any node info stored inside,
                 // add both node1 and node2 data.
                 adjList[node1].put(node2, label);
@@ -97,7 +97,7 @@ public class AdjacencyList<T> implements Graph<T> {
      */
     public void remove(int node1, int node2) {
         if (directed) {
-            if (adjList[node1].get(node2) != null) {
+            if (adjList[node1].containsKey(node2)) {
                 // if graph is directed and has a node associated with node 1
                 adjList[node1].remove(node2);
                 --edgeCount;
@@ -105,7 +105,7 @@ public class AdjacencyList<T> implements Graph<T> {
                 System.out.println("Invalid Remove: " + node1 + " is already null");
             }
         } else {
-            if (adjList[node1].get(node2) != null) {
+            if (adjList[node1].containsKey(node2)) {
                 // if graph is undirected and has any node info stored inside,
                 // remove both node1 and node2 data.
                 adjList[node1].remove(node2);

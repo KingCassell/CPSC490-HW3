@@ -309,7 +309,6 @@ public class BFSTest {
     public void complexBipartiteGraph() {
         Graph<Integer> g_a_u = new AdjacencyList<>(10, false);
         g_a_u.add(0, null, 1);
-        g_a_u.add(1, null, 0);
         g_a_u.add(1, null, 2);
         g_a_u.add(1, null, 3);
         g_a_u.add(1, null, 5);
